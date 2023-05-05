@@ -11,6 +11,7 @@
                 <th>Name</th>
                 <th>Price</th>
                 <th>Stock</th>
+                <th>Control</th>
             </tr>
         </thead>
         <tbody>
@@ -28,10 +29,13 @@
                     <td>{{ $item->name }}</td>
                     <td>{{ $item->price }}</td>
                     <td>{{ $item->stock }}</td>
+                    <td>
+                        <a href="{{ route('item.show',$item->id) }}" class=" btn btn-outline-dark">Details</a>
+                    </td>
                 </tr>
            @empty
                 <tr>
-                    <td colspan="4" class=" text-center py-4">
+                    <td colspan="5" class=" text-center py-4">
                         No Item Available<br>
                         <a href="{{ route("item.create") }}" class=" btn btn-dark">Create Item</a>
                     </td>

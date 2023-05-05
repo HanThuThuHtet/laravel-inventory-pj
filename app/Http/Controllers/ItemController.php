@@ -61,4 +61,18 @@ class ItemController extends Controller
         //return  $request;
     }
 
+    public function show($id){
+        //select * from items where id=$id;
+
+        //$item = Item::findOrFail($id);
+        // if(is_null($item)){
+        //     //return "not fouond";
+        //     return abort(404);   //same logic as findOrFail
+        // }
+        //return view('inventory.show',compact("item")); //compact => var to array
+
+        //dd($item);
+        return view('inventory.show',["item" => Item::findOrFail($id)]);
+    }
+
 }
