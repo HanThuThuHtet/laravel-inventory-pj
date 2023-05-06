@@ -30,13 +30,21 @@
                     <td>{{ $item->price }}</td>
                     <td>{{ $item->stock }}</td>
                     <td>
-                        <a href="{{ route('item.show',$item->id) }}" class=" btn btn-outline-dark">Details</a>
+                        <a href="{{ route('item.show',$item->id) }}" class=" btn btn-sm btn-outline-dark">Details</a>
+                        <a href="{{ route('item.edit',$item->id) }}" class="btn btn-sm btn-outline-success">Edit</a>
+                        <form class=" d-inline-block" action="{{ route("item.destroy",$item->id) }}" method="post">
+                            @method("delete")
+                            @csrf
+                            <button class="btn btn-sm btn-outline-danger">Delete</button>
+                        </form>
                     </td>
                 </tr>
            @empty
                 <tr>
                     <td colspan="5" class=" text-center py-4">
-                        No Item Available<br>
+                        <p>
+                            No Item Available
+                        </p>
                         <a href="{{ route("item.create") }}" class=" btn btn-dark">Create Item</a>
                     </td>
                 </tr>

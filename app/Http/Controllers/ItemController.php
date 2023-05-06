@@ -7,9 +7,7 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-    public function create(){
-        return view('inventory.create');
-    }
+
     public function index(){
         // $items = new Item();
         // $all = $items->all();
@@ -19,6 +17,11 @@ class ItemController extends Controller
             "items" => Item::all()
         ]);
     }
+
+    public function create(){
+        return view('inventory.create');
+    }
+
     public function store(Request $request){ //Request(Dependency injection) => get/post ....
         //dd($request);
         // if($request->has("price")){
@@ -74,5 +77,32 @@ class ItemController extends Controller
         //dd($item);
         return view('inventory.show',["item" => Item::findOrFail($id)]);
     }
+
+    //update -> edit
+    public function edit($id)
+    {
+        return view('inventory.edit',["item" => Item::findOrFail($id)]);
+    }
+
+    public function update($id,Request $request)
+    {
+        $item = Item::findOrFail($id);
+        $item->name = $request->name;
+        $item->price = $request->price;
+        $item->stock = $request->stock;
+        $item->update();
+        return redirect()->route("item.index");
+    }
+
+    public function destroy($id)
+    {
+        $item = Item::findOrFail($id);
+        $item->delete();
+        return redirect()->back();
+        //return redirect()->route("item.index");
+
+    }
+
+
 
 }

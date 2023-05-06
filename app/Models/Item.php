@@ -20,3 +20,13 @@ class Item extends Model
 //=>run migration
 //php artisan migrate
 //php artisan migrate:fresh => empty
+
+
+//php artisan make:controller CategoryController --resource
+//Route::resource('category', CategoryController::class);
+//view -> categroy -> 4 blade
+//php artisan make:model Category -m    //m->migration
+//migrate -> add column
+//php artisan migrate
+//php artisan migrate:status
+//php artisan migrate:fresh
