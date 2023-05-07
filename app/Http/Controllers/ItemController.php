@@ -7,102 +7,81 @@ use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
-
-    public function index(){
-        // $items = new Item();
-        // $all = $items->all();
-        // return $all;
-        // dd($all);
+    /**
+     * Display a listing of the resource.
+     */
+    public function index()
+    {
         return view("inventory.index",[
             "items" => Item::all()
         ]);
     }
 
-    public function create(){
-        return view('inventory.create');
+    /**
+     * Show the form for creating a new resource.
+     */
+    public function create()
+    {
+        return view("inventory.create");
     }
 
-    public function store(Request $request){ //Request(Dependency injection) => get/post ....
-        //dd($request);
-        // if($request->has("price")){
-        //     dd($request->price);
-        // }else{
-        //     dd("sorry");
-        // }
-
-    //Eloquent ORM
-        $item = new Item(); //Item => moldel
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(Request $request)
+    {
+        $request->validate([
+            "name" => 'required', //validation rule
+            "price" => 'required',
+            "stock" => 'required'
+        ]);
+        $item = new Item();
         $item->name = $request->name;
         $item->price = $request->price;
         $item->stock = $request->stock;
-        $item->save(); //insert into ...
-        //dd($item); //model
-        //return $item;
-
-
-    //Static Method => mass data/mass assignment
-        // $item = Item::create([
-        //     "name" => $request->name,
-        //     "price" => $request->price,
-        //     "stock" => $request->stock
-        // ]);
-
-    //$request->all()
-        //$item = Item::create($request->all()); //include token
-        //dd($request->all());
-
-
-    //insert => query builder // return only boolean
-        // $item = Item::insert([
-        //         "name" => $request->name,
-        //         "price" => $request->price,
-        //         "stock" => $request->stock
-        //     ]);
-
+        $item->save();
         return redirect()->route("item.index");
-        //return $item;
-        //return  $request;
     }
 
-    public function show($id){
-        //select * from items where id=$id;
-
-        //$item = Item::findOrFail($id);
-        // if(is_null($item)){
-        //     //return "not fouond";
-        //     return abort(404);   //same logic as findOrFail
-        // }
-        //return view('inventory.show',compact("item")); //compact => var to array
-
-        //dd($item);
-        return view('inventory.show',["item" => Item::findOrFail($id)]);
-    }
-
-    //update -> edit
-    public function edit($id)
+    /**
+     * Display the specified resource.
+     */
+    public function show(Item $item)
     {
-        return view('inventory.edit',["item" => Item::findOrFail($id)]);
+        //return view('inventory.show',["item" => $item]);
+        return view('inventory.show',compact('item'));
     }
 
-    public function update($id,Request $request)
+    /**
+     * Show the form for editing the specified resource.
+     */
+    public function edit(Item $item)
     {
-        $item = Item::findOrFail($id);
+        return view('inventory.edit',compact('item'));
+    }
+
+    /**
+     * Update the specified resource in storage.
+     */
+    public function update(Request $request, Item $item)
+    {
         $item->name = $request->name;
         $item->price = $request->price;
         $item->stock = $request->stock;
         $item->update();
-        return redirect()->route("item.index");
+        return redirect()->route('item.index');
     }
 
-    public function destroy($id)
+    /**
+     * Remove the specified resource from storage.
+     */
+    public function destroy(Item $item)
     {
-        $item = Item::findOrFail($id);
         $item->delete();
         return redirect()->back();
-        //return redirect()->route("item.index");
-
     }
-
-
-
 }
+
+
+
+//php artisan make:controller ItemController -r --model=Item
