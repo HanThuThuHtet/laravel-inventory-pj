@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
-use App\Http\Requests\StoreItemRequest;
-use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Http\Request;
 
 class ItemController extends Controller
 {
@@ -14,8 +13,7 @@ class ItemController extends Controller
     public function index()
     {
         return view("inventory.index",[
-            //"items" => Item::all()
-            "items" => Item::paginate(7)
+            "items" => Item::all()
         ]);
     }
 
@@ -24,21 +22,25 @@ class ItemController extends Controller
      */
     public function create()
     {
-        return view('inventory.create');
+        return view("inventory.create");
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreItemRequest $request)
+    public function store(Request $request)
     {
-        //validation rule in StoreItemRequest
+        $request->validate([
+            "name" => 'required|min:3|max:50|unique:items,name', //validation rule //unique:tablename,colname
+            "price" => 'required|numeric|gte:50',
+            "stock" => 'required|numeric|gt:3'
+        ]);
         $item = new Item();
         $item->name = $request->name;
         $item->price = $request->price;
         $item->stock = $request->stock;
         $item->save();
-        return redirect()->route('item.index')->with("status","New Item Created"); //session message with()
+        return redirect()->route("item.index");
     }
 
     /**
@@ -46,6 +48,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
+        //return view('inventory.show',["item" => $item]);
         return view('inventory.show',compact('item'));
     }
 
@@ -60,13 +63,14 @@ class ItemController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateItemRequest $request, Item $item)
+    public function update(Request $request, Item $item)
     {
+
         $item->name = $request->name;
         $item->price = $request->price;
         $item->stock = $request->stock;
         $item->update();
-        return redirect()->route('item.index')->with("status","Item updated successfully");
+        return redirect()->route('item.index');
     }
 
     /**
@@ -75,6 +79,10 @@ class ItemController extends Controller
     public function destroy(Item $item)
     {
         $item->delete();
-        return redirect()->back()->with("status","Item deleted successfully");
+        return redirect()->back();
     }
 }
+
+
+
+//php artisan make:controller ItemController -r --model=Item
