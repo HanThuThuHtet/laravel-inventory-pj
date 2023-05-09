@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Http\Requests\StoreItemRequest;
 use App\Http\Requests\UpdateItemRequest;
+use Illuminate\Support\Facades\DB;
+
+use function PHPSTORM_META\map;
 
 class ItemController extends Controller
 {
@@ -13,10 +16,39 @@ class ItemController extends Controller
      */
     public function index()
     {
-        return view("inventory.index",[
-            //"items" => Item::all()
-            "items" => Item::paginate(7)
-        ]);
+        // return view("inventory.index",[
+        //     //"items" => Item::all()
+        //     "items" => Item::paginate(7)
+        // ]);
+
+    //Model Methods
+        //$items = Item::all();
+        //return collect($items->first())->values();
+        //dd($items);
+        //dd($items->contains("name","Nicholaus Hane"));
+        //dd($items->filter(fn($item) => $item->price > 900));
+        //dd($items->sum("price")); //eloquent/collection
+        // $newItems = $items->map(function($item){
+        //     $item->price += 50;
+        //     $item->stock -= 10;
+        //     return $item;
+        // });
+        //dd($newItems);
+        //return $items->sum("price");
+
+    //Builders
+        //$items = Item::where("id",">",5)->where("price",">",7000)->get();
+        // $items = Item::where("price",">",9000)
+        //         ->orWhere("stock","<",10)
+        //         ->get();
+        //$items = Item::whereIn("id",[5,10,15])->get();
+        // $items = Item::whereBetween("price",[7000,9000])->get();
+        // return $items;
+
+    //Query Builder
+        $items = DB::table('items')->where("id","<",5)->get();
+        dd($items);
+
     }
 
     /**
