@@ -9,11 +9,41 @@
             {{  session('status') }}
         </div>
     @endif
+
+    {{-- Search --}}
+    <div class="row py-3">
+        <div class="col-md-7">
+            <a href="{{ route('item.create') }}" class="btn btn-outline-dark">Create</a>
+        </div>
+        <div class="col-md-5">
+            <form action="{{route('item.index')}}" method="get">
+                <div class=" input-group">
+                    <input type="text" class="form-control" name="keyword"
+                   @if (request()->has("keyword"))
+                   value="{{ request()->keyword }}"
+                   @endif>
+
+                    @if (request()->has("keyword"))
+                        <a href="{{ route('item.index') }}" class="btn btn-secondary">Clear</a>
+                    @endif
+                    <button class="btn btn-dark">Search</button>
+                </div>
+            </form>
+        </div>
+    </div>
+    <div class=" d-flex justify-content-end align-items-center">
+        @if (request()->has("keyword"))
+            <h6 class=" text-secondary"><b class="text-dark">{{ count($items) }}</b> matching results for <b class="text-dark">{{ request()->keyword }}</b></h6>
+        @endif
+    </div>
+
     <table class="table ">
         <thead>
             <tr>
                 <th>#</th>
-                <th>Name</th>
+                <th>Name
+                    {{-- <a href="{{ route('item.index') }}?name=asc">ASC</a> --}}
+                </th>
                 <th>Price</th>
                 <th>Stock</th>
                 <th>Control</th>

@@ -16,10 +16,22 @@ class ItemController extends Controller
      */
     public function index()
     {
-        // return view("inventory.index",[
-        //     //"items" => Item::all()
-        //     "items" => Item::paginate(7)
-        // ]);
+
+        //dd(request()->keyword);
+        $items = Item::
+        when(request()->has("keyword"),function($query){
+            $keyword = request()->keyword;
+            $query->where("name","like","%".$keyword."%");
+            $query->orWhere("price","like","%".$keyword."%");
+            $query->orWhere("stock","like","%".$keyword."%");
+
+        })
+        ->when(request()->has("name"),function($query){
+            $sortType = request()->name ?? 'asc';
+            $query->orderBy("name",$sortType);
+        })
+        ->paginate(7)->withQueryString();
+        return view("inventory.index",compact("items"));
 
     //Model Methods
         //$items = Item::all();
@@ -46,8 +58,17 @@ class ItemController extends Controller
         // return $items;
 
     //Query Builder
-        $items = DB::table('items')->where("id","<",5)->get();
-        dd($items);
+        //$items = DB::table('items')->where("id","<",5)->get();
+        // $items  = Item::when(false,function($query){
+        //     $query->where("id",5);
+        // })->get();
+        // $items = Item::limit(5)->offset(20)->orderBy("id","desc")->get();
+        //$items = Item::latest("id")->get();
+        // get => collection   //first => model   //firstOrFail
+        //$items = Item::where("id",">",100)->firstOrFail();
+        //$items = Item::find(10);
+        // $items = Item::paginate(7);
+        // dd($items);
 
     }
 

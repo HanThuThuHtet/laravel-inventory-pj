@@ -62,7 +62,10 @@
                 <div class=" invalid-feedback">{{ $message  }}</div>
             @enderror
         </div>
-        <button class=" btn btn-dark">Create Item</button>
+        <div class="d-flex justify-content-between">
+            <button class=" btn btn-dark">Create Item</button>
+            <a href="{{ route('item.index') }}" class=" btn btn-outline-dark">Cancel</a>
+        </div>
     </form>
 
 @endsection
