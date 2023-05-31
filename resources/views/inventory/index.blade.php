@@ -37,12 +37,18 @@
         @endif
     </div>
 
+    <div class="alert alert-info">
+        {{-- {{ route('item.index',["page"=>2,"keyword"=>"or"]) }} --}}
+    </div>
+
     <table class="table ">
         <thead>
             <tr>
                 <th>#</th>
                 <th>Name
-                    {{-- <a href="{{ route('item.index') }}?name=asc">ASC</a> --}}
+                    <a href="{{ route('item.index') }}?name=asc">ASC</a>
+                    <a href="{{ route('item.index',["name"=>"desc"])}}">DESC</a>
+                    <a href="{{ route('item.index')}}">Auto</a>
                 </th>
                 <th>Price</th>
                 <th>Stock</th>

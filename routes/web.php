@@ -21,6 +21,9 @@ use Illuminate\Support\Facades\Route;
 // });
 
 Route::get("/",[PageController::class,"home"])->name('page.home');
+Route::get("/multi/{x}/{y}",function($x,$y){
+    return $x.$y;
+})->name("multi");
 
 // Route::prefix("inventory")->controller(ItemController::class)->group(function(){
 

@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ItemApiController;
+use App\Http\Middleware\CheckApiToken;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -14,6 +16,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+// Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//     return $request->user();
+// });
+
+// Route::apiResource("item",ItemApiController::class)->middleware(CheckApiToken::class);
+// Route::apiResource("item",ItemApiController::class)->middleware("cat"); //middlewareAliases
+Route::apiResource("item",ItemApiController::class); //controller middleware
+
